@@ -1,5 +1,7 @@
 # run using:
 # mpiexec -n 40 python esn_multiple_res_nikola.py
+import matplotlib
+matplotlib.use('Agg')
 
 import pyESN
 import matplotlib.pyplot as plt
