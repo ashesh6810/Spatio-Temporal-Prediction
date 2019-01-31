@@ -1,2 +1,5 @@
 *.png
 *.pyc
+
+*/mpi4py-demo.o*
+

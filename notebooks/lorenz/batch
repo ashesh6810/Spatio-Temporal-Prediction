@@ -1,0 +1,14 @@
+#!/bin/bash
+#SBATCH -p development
+#SBATCH -A TG-ATM170020 
+#SBATCH -J mpi4py-demo
+#SBATCH -o mpi4py-demo.o%j
+#SBATCH -N 40
+#SBATCH -n 64
+#SBATCH -t 10:00:00
+
+module load  gcc/7.1.0
+module load impi/17.0.3
+module load python/2.7.13
+ibrun python2 esn_multiple_res_nikola.py 
+ 

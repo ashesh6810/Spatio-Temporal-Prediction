@@ -16,7 +16,7 @@ additional = 40 % size
 
 data = genfromtxt('lorenz_data_F8_new_std.csv', delimiter=",")
 dataT = np.transpose(data)
-np.shape(dataT)
+#np.shape(dataT)
 
 esn = pyESN.ESN(
   n_inputs=1,
