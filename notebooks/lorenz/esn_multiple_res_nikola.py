@@ -11,6 +11,9 @@ comm = MPI.COMM_WORLD
 size = comm.Get_size()
 rank = comm.Get_rank()
 
+per_proc = 40 / size
+additional = 40 % size
+
 data = genfromtxt('lorenz_data_F8_new_std.csv', delimiter=",")
 dataT = np.transpose(data)
 np.shape(dataT)
@@ -19,7 +22,7 @@ esn = pyESN.ESN(
   n_inputs=1,
   n_outputs=1,
   n_reservoir=5000,
-  # n_reservoir=500,  # lover number for debugging on laptop
+  # n_reservoir=50,  # lover number for debugging on laptop
   spectral_radius=1.5,
   random_state=42)
 
@@ -28,19 +31,28 @@ trainN = 50000
 testN = 2000
 # testN = 400  # lover number for debugging on laptop
 
-part_sol_matrix = np.zeros([testN, 1])
+samples = per_proc + (1 if rank < additional else 0)
+start_sample = per_proc * rank + min(additional, rank)
 
-ptr = rank
-pred_training = esn.fit(np.ones(trainN), dataT[0 : trainN, ptr])
-prediction = esn.predict(np.ones(testN))
-print(ptr, "test error: \n" + str(np.sqrt(np.mean((prediction.flatten() - dataT[trainN:trainN+testN, ptr]) ** 2))))
+prediction = np.zeros([testN, samples])
+
+for ptr in range(start_sample, start_sample + samples):
+  pred_training = esn.fit(np.ones(trainN), dataT[0 : trainN, ptr])
+  prediction[:,ptr - start_sample] = esn.predict(np.ones(testN)).flatten()
+  print(rank, ptr, "test error: \n" + str(np.sqrt(np.mean((prediction[:,ptr - start_sample] - dataT[trainN:trainN+testN, ptr]) ** 2))))
 
 prediction_trans = np.transpose(prediction)
 
-sol_matrix = np.array(comm.gather(prediction_trans, root=0))
+res = np.array(comm.gather(prediction_trans, root=0))
 
 if rank == 0:
-  sol_matrix = sol_matrix.transpose(2, 0, 1).reshape(testN, -1)
+  sol_matrix = np.zeros([testN, 40])
+  ind = 0
+  for mat in res:
+    for arr in mat:
+      sol_matrix[:,ind] = arr
+      ind += 1
+
   ptr = 2
   plt.figure(figsize=(15, 1.5))
   plt.plot(range(0, trainN + testN), dataT[0 : trainN + testN, ptr], 'k', label="target system")
