@@ -60,6 +60,8 @@ if rank == 0:
       sol_matrix[:,ind] = arr
       ind += 1
 
+  np.save("sol_matrix", sol_matrix)
+
   ptr = 2
   plt.figure(figsize=(15, 1.5))
   plt.plot(range(0, trainN + testN), dataT[0 : trainN + testN, ptr], 'k', label="target system")
