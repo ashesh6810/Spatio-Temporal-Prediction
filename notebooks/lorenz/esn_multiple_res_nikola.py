@@ -8,6 +8,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 from numpy import genfromtxt
 from mpi4py import MPI
+import time
+
+start_time = time.time()
 
 comm = MPI.COMM_WORLD
 size = comm.Get_size()
@@ -25,7 +28,8 @@ esn = pyESN.ESN(
   n_outputs=1,
   n_reservoir=5000,
   # n_reservoir=50,  # lover number for debugging on laptop
-  spectral_radius=1.5,
+  spectral_radius=0.9,
+  sparsity=0.002,
   random_state=42)
 
 trainN = 50000
@@ -78,3 +82,6 @@ if rank == 0:
     plt.legend(loc=(0.61, 1.1), fontsize='x-small')
 
   plt.savefig('panel_plot.png')
+
+  print("execution time:", time.time() - start_time)
+
