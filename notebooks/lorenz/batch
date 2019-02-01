@@ -3,8 +3,8 @@
 #SBATCH -A TG-ATM170020 
 #SBATCH -J mpi4py-demo
 #SBATCH -o mpi4py-demo.o%j
-#SBATCH -N 16
-#SBATCH -n 16
+#SBATCH -N 10
+#SBATCH -n 10
 #SBATCH -t 2:00:00
 
 module load  gcc/7.1.0
