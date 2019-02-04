@@ -1,5 +1,4 @@
 import pyESN
-import matplotlib.pyplot as plt
 import numpy as np
 from numpy import genfromtxt
 import sys
@@ -28,7 +27,7 @@ def run(res, trn):
   np.shape(sol_matrix)
 
 
-  pred_training = esn.fit(np.ones(trainN - spin_off), dataT[spin_off:trainN,:], inspect=True)
+  esn.fit(np.ones(trainN - spin_off), dataT[spin_off:trainN,:], inspect=True)
 
   prediction = esn.predict(np.ones(testN))
 
