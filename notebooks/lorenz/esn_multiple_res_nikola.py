@@ -26,11 +26,11 @@ dataT = np.transpose(data)
 esn = pyESN_BE.ESN(
   n_inputs=1,
   n_outputs=1,
-  n_reservoir=5000,
+  n_reservoir=8000,
   # n_reservoir=50,  # lover number for debugging on laptop
   spectral_radius=0.9,
   sparsity=0.002,
-  reg=0.001,
+  reg=0.005,
   random_state=42)
 
 trainN = 50000
