@@ -3,7 +3,7 @@
 import matplotlib
 matplotlib.use('Agg')
 
-import pyESN
+import pyESN_BE
 import matplotlib.pyplot as plt
 import numpy as np
 from numpy import genfromtxt
@@ -23,13 +23,14 @@ data = genfromtxt('lorenz_data_F8_new_std.csv', delimiter=",")
 dataT = np.transpose(data)
 #np.shape(dataT)
 
-esn = pyESN.ESN(
+esn = pyESN_BE.ESN(
   n_inputs=1,
   n_outputs=1,
-  n_reservoir=5000,
+  n_reservoir=8000,
   # n_reservoir=50,  # lover number for debugging on laptop
   spectral_radius=0.9,
   sparsity=0.002,
+  reg=0.005,
   random_state=42)
 
 trainN = 50000
@@ -58,6 +59,8 @@ if rank == 0:
     for arr in mat:
       sol_matrix[:,ind] = arr
       ind += 1
+
+  np.save("sol_matrix", sol_matrix)
 
   ptr = 2
   plt.figure(figsize=(15, 1.5))
