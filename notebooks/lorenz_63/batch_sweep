@@ -1,11 +1,11 @@
 #!/bin/bash
-#SBATCH -p normal
+#SBATCH -p development
 #SBATCH -A TG-ATM170020 
 #SBATCH -J mpi4py-demo
 #SBATCH -o mpi4py-demo.o%j
-#SBATCH -N 25
-#SBATCH -n 25
-#SBATCH -t 06:00:00
+#SBATCH -N 16
+#SBATCH -n 16
+#SBATCH -t 02:00:00
 
 module load gcc/7.1.0
 module load impi/17.0.3
