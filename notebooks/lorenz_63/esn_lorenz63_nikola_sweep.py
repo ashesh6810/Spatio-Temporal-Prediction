@@ -40,26 +40,40 @@ def run(res, trn):
   prediction = esn.predict(np.ones(testN))
 
   error_mat=prediction-dataT[trainN:trainN + testN]
+  horizon = 0
+  while (horizon < testN) and \
+    (abs(error_mat[horizon, 0]) < 0.5) and \
+    (abs(error_mat[horizon, 1]) < 0.5) and \
+    (abs(error_mat[horizon, 2]) < 0.5):
+    horizon += 1
 
-  return (np.sum(np.sum(np.square(error_mat)))) / float(np.sum(np.sum(np.square(dataT[trainN:trainN + testN]))))
+  return (np.sum(np.sum(np.square(error_mat[:horizon])))) / float(np.sum(np.sum(np.square(dataT[trainN:trainN + horizon])))), horizon
 
 
 res = res_arr[rank % 5]
 trn = trn_arr[rank / 5]
 
-avrg = 0
+rmse_avrg = 0
+hor_avrg = 0
 for _ in range(7):
-  avrg += run(res, trn)
-avrg /= 7.0
-print("reservoirs:", res, "- trainN:", trn, "- RMSE:", avrg)
+  rmse, hor = run(res, trn)
+  rmse_avrg += rmse
+  hor_avrg += hor
+rmse_avrg /= 7.0
+hor_avrg /= 7.0
+print("reservoirs:", res, "- trainN:", trn, "- RMSE:", rmse_avrg, "- horizon:", hor_avrg)
 
 rank2 = rank + size
 if rank2 < 25:
   res = res_arr[rank2 % 5]
   trn = trn_arr[rank2 / 5]
 
-  avrg = 0
+  rmse_avrg = 0
+  hor_avrg = 0
   for _ in range(7):
-    avrg += run(res, trn)
-  avrg /= 7.0
-  print("reservoirs:", res, "- trainN:", trn, "- RMSE:", avrg)
+    rmse, hor = run(res, trn)
+    rmse_avrg += rmse
+    hor_avrg += hor
+  rmse_avrg /= 7.0
+  hor_avrg /= 7.0
+  print("reservoirs:", res, "- trainN:", trn, "- RMSE:", rmse_avrg, "- horizon:", hor_avrg)
