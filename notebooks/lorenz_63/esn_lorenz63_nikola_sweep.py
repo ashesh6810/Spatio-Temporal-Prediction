@@ -1,5 +1,4 @@
 import pyESN
-import matplotlib.pyplot as plt
 import matplotlib
 matplotlib.use('Agg')
 import numpy as np
