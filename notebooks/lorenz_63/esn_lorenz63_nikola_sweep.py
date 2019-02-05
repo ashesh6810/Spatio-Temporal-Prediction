@@ -6,6 +6,12 @@ import numpy as np
 from numpy import genfromtxt
 import sys
 
+from mpi4py import MPI
+
+comm = MPI.COMM_WORLD
+size = comm.Get_size()
+rank = comm.Get_rank()
+
 data=genfromtxt('lorenz_63_modified.csv', delimiter=",")
 dataT=np.transpose(data)
 dataT=np.transpose(dataT)
@@ -39,13 +45,12 @@ def run(res, trn):
   return (np.sum(np.sum(np.square(error_mat)))) / float(np.sum(np.sum(np.square(dataT[trainN:trainN + testN]))))
 
 
-res_mat = np.zeros((len(res_arr), len(trn_arr)))
-for (i, res) in enumerate(res_arr):
-  for (j, trn) in enumerate(trn_arr):
-    print("reservoirs:", res, "- trainN:", trn)
-    avrg = 0
-    for _ in range(7):
-      avrg += run(res, trn)
-    res_mat[i, j] = avrg / 5.0
-    
-print (res_mat)
+res = res_arr[rank % 5]
+trn = trn_arr[rank / 5]
+
+avrg = 0
+for _ in range(7):
+  avrg += run(res, trn)
+avrg /= 5.0
+
+print("reservoirs:", res, "- trainN:", trn, "- RMSE:", avrg)
