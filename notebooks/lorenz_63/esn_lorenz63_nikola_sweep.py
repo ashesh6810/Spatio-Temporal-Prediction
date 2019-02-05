@@ -50,7 +50,7 @@ trn = trn_arr[rank / 5]
 avrg = 0
 for _ in range(7):
   avrg += run(res, trn)
-avrg /= 5.0
+avrg /= 7.0
 print("reservoirs:", res, "- trainN:", trn, "- RMSE:", avrg)
 
 rank2 = rank + size
@@ -61,5 +61,5 @@ if rank2 < 25:
   avrg = 0
   for _ in range(7):
     avrg += run(res, trn)
-  avrg /= 5.0
+  avrg /= 7.0
   print("reservoirs:", res, "- trainN:", trn, "- RMSE:", avrg)
