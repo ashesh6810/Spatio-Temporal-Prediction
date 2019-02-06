@@ -75,7 +75,7 @@ plt.xlabel('$dt$',fontsize=40)
 plt.ylabel('Grid Point',fontsize=40)
 plt.title('Prediction',fontsize=40)
 
-pl.subplot(3,1,3)
+plt.subplot(3,1,3)
 plt.contourf(np.transpose(t),np.transpose(grid),diff_mat,cmap=cm.jet,vmin=-3,vmax=3)
 plt.colorbar(ticks=v)
 #cbar.ax.set_ylabel('verbosity coefficient')
