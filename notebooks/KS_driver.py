@@ -31,7 +31,7 @@ for ptr in range(0,16):
 
 for ptr in range (0,32):
 
- plt.figure(figsize=(15,3))
+ plt.figure(figsize=(15,15))
  plt.subplot(8,4,ptr)
  plt.plot(range(trainN-1000,trainN+testN),dataT[trainN-1000:trainN+testN,ptr],'k',label="target system")
  plt.plot(range(trainN,trainN+testN),sol_matrix[:,ptr],'y', label="free running ESN")
@@ -43,8 +43,9 @@ for ptr in range (0,32):
 
 plt.savefig('time_series.png')
 
+[t,grid]=np.meshgrid((np.arange(trainN,trainN+testN)),np.arange(0,64))
 
-[t,grid]=np.meshgrid((np.arange(spin_off,trainN)),np.arange(0,64))
+
 diff_mat=dataT[trainN:trainN+testN,:]-sol_matrix[0:testN,:]
 v = np.linspace(-3, 3, 10, endpoint=True)
 
@@ -62,7 +63,7 @@ plt.ylabel('Grid Point',fontsize=40)
 plt.title('Truth',fontsize=40)
 
 plt.subplot(3,1,2)
-plt.figure(figsize=(45,15))
+
 plt.contourf(np.transpose(t),np.transpose(grid),sol_matrix[0:testN,:],cmap=cm.jet,vmin=-3,vmax=3)
 plt.colorbar(ticks=v)
 #cbar.ax.set_ylabel('verbosity coefficient')
