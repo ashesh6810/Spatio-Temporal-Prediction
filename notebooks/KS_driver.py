@@ -29,9 +29,9 @@ for ptr in range(0,16):
  sol_matrix[:,count:count+4]=(prediction)
  count=count+4;
 
+plt.figure(figsize=(15,15))
 for ptr in range (0,32):
 
- plt.figure(figsize=(15,15))
  plt.subplot(8,4,ptr+1)
  plt.plot(range(trainN-1000,trainN+testN),dataT[trainN-1000:trainN+testN,ptr],'k',label="target system")
  plt.plot(range(trainN,trainN+testN),sol_matrix[:,ptr],'y', label="free running ESN")
