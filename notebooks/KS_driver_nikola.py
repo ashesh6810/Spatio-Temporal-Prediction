@@ -21,14 +21,6 @@ res_arr = [2000, 3000, 4500, 6000, 7500, 9000]
 spr_arr = [0.95, 1.4, 1.9, 2.4, 2.9, 3.2]
 reg_arr = [0.0001, 0.001, 0.01]
 
-ind = rank
-while (ind < len(res_arr) * len(spr_arr) * len(reg_arr)):
-  res = ind % len(res_arr)
-  spr = ind / len(res_arr) % len(spr_arr)
-  reg = ind / len(res_arr) / len(spr_arr) % len(reg_arr)
-  run(res_arr[res], spr_arr[spr], reg_arr[reg])
-  ind += size
-
 def run(res, spr, reg):
   esn = pyESN.ESN(
     n_inputs=1,
@@ -105,3 +97,11 @@ def run(res, spr, reg):
   plt.title('Error Matrix', fontsize=40)
 
   plt.savefig('contourplots_' + res + '_' + spr + '_' + reg + '.png')
+
+ind = rank
+while (ind < len(res_arr) * len(spr_arr) * len(reg_arr)):
+  res = ind % len(res_arr)
+  spr = ind / len(res_arr) % len(spr_arr)
+  reg = ind / len(res_arr) / len(spr_arr) % len(reg_arr)
+  run(res_arr[res], spr_arr[spr], reg_arr[reg])
+  ind += size
