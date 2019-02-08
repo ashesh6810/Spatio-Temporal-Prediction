@@ -15,8 +15,8 @@ data=genfromtxt('lorenz_63_modified.csv', delimiter=",")
 dataT=np.transpose(data)
 dataT=np.transpose(dataT)
 
-res_arr = [500, 1000, 1500, 2000, 2500]
-trn_arr = [20000, 30000, 40000, 50000, 57000]
+res_arr = [500, 1000, 1500, 2000]
+trn_arr = [30000, 40000, 50000, 57000]
 # trn_arr = [20, 30, 40, 50]
 
 def run(res, trn):
@@ -49,31 +49,19 @@ def run(res, trn):
 
   return (np.sum(np.sum(np.square(error_mat[:horizon])))) / float(np.sum(np.sum(np.square(dataT[trainN:trainN + horizon])))), horizon
 
+reps = 17
 
-res = res_arr[rank % 5]
-trn = trn_arr[rank / 5]
+res = res_arr[rank % 4]
+trn = trn_arr[rank / 4]
 
 rmse_avrg = 0
 hor_avrg = 0
-for _ in range(7):
+for i in range(reps):
   rmse, hor = run(res, trn)
+  print("temp res:", res, "- trn:", trn, "- i:", i, "- rmse:", rmse, "- hor:", hor)
   rmse_avrg += rmse
   hor_avrg += hor
-rmse_avrg /= 7.0
-hor_avrg /= 7.0
+rmse_avrg /= reps
+hor_avrg /= reps
 print("reservoirs:", res, "- trainN:", trn, "- RMSE:", rmse_avrg, "- horizon:", hor_avrg)
 
-rank2 = rank + size
-if rank2 < 25:
-  res = res_arr[rank2 % 5]
-  trn = trn_arr[rank2 / 5]
-
-  rmse_avrg = 0
-  hor_avrg = 0
-  for _ in range(7):
-    rmse, hor = run(res, trn)
-    rmse_avrg += rmse
-    hor_avrg += hor
-  rmse_avrg /= 7.0
-  hor_avrg /= 7.0
-  print("reservoirs:", res, "- trainN:", trn, "- RMSE:", rmse_avrg, "- horizon:", hor_avrg)
