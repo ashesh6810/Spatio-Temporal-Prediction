@@ -54,7 +54,7 @@ def run(res, spr, reg):
     plt.ylabel('grid point ' + str(ptr), fontsize=14)
 
 
-  plt.savefig('time_series_' + res + '_' + spr + '_' + reg + '.png')
+  plt.savefig('time_series_' + str(res) + '_' + str(spr) + '_' + str(reg) + '.png')
 
   [t, grid] = np.meshgrid((np.arange(trainN, trainN + testN)), np.arange(0, 64))
 
@@ -96,7 +96,7 @@ def run(res, spr, reg):
   plt.ylabel('Grid Point', fontsize=40)
   plt.title('Error Matrix', fontsize=40)
 
-  plt.savefig('contourplots_' + res + '_' + spr + '_' + reg + '.png')
+  plt.savefig('contourplots_' + str(res) + '_' + str(spr) + '_' + str(reg) + '.png')
 
 ind = rank
 while (ind < len(res_arr) * len(spr_arr) * len(reg_arr)):
